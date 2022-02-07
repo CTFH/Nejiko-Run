@@ -14,6 +14,7 @@ public class NejikoController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //必要なコンポーネントを自動取得
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
     }
@@ -34,13 +35,18 @@ public class NejikoController : MonoBehaviour
                 animator.SetTrigger("jump");
             }
         }
+        //重力分の力を毎フレーム追加
         moveDirection.y -= gravity * Time.deltaTime;
+
+        //移動実行
         Vector3 globalDirection = transform.TransformDirection(moveDirection);
         controller.Move(globalDirection * Time.deltaTime);
 
+        //移動後設置してたらY方向の速度はリセットする
         if (controller.isGrounded) {
             moveDirection.y = 0;
         }
+        //速度が0以上なら走っているフラグをTrueにする
         animator.SetBool("run", moveDirection.z > 0f);
         
     }
